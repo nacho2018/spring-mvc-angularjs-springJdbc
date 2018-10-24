@@ -3,6 +3,12 @@ package com.xvitcoder.springmvcangularjs.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.xvitcoder.springmvcangularjs.beans.RailwayStation;
@@ -11,6 +17,10 @@ import com.xvitcoder.springmvcangularjs.beans.RailwayStation;
 @Service("RailwayStationService")
 public class RailwayStationServiceImpl implements RailwayStationService {
     
+	@Autowired 
+	private DataSource dataSource;
+	private JdbcTemplate jdbcTemplate;
+	
     private static List<RailwayStation> rsList = new ArrayList<RailwayStation>();
     private static Long id = 0L;
 
@@ -29,8 +39,13 @@ public class RailwayStationServiceImpl implements RailwayStationService {
         return null;
     }
 
-	public List<RailwayStation> getAllRailwayStations() {		
-		return rsList;
+	public List<RailwayStation> getAllRailwayStations() throws DataAccessException{	
+		
+		jdbcTemplate = new JdbcTemplate(dataSource);
+    	String sql = "SELECT * FROM RAILWAYSTATIONS";
+    	@SuppressWarnings("rawtypes")
+		List<RailwayStation> rwsts = jdbcTemplate.query(sql, new BeanPropertyRowMapper(RailwayStation.class));
+    	return rwsts;
 	}
 
 

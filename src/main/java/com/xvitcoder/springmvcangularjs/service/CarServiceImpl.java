@@ -1,6 +1,7 @@
 package com.xvitcoder.springmvcangularjs.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
@@ -35,21 +36,12 @@ public class CarServiceImpl implements CarService {
     
     @SuppressWarnings("unchecked")
 	@Override
-    public List<Car> getAllCars(){
-//    	String[] cars = new String[]{"ford", "volvo", "toyota"};
-//    	for (int i = 0; i < cars.length; i++){
-//    		carList.add(cars[i]);
-//    	}
-//        return carList;
-    	
+    public List<Car> getAllCars() throws DataAccessException{
+
     	jdbcTemplate = new JdbcTemplate(dataSource);
-    	
     	String sql = "SELECT * FROM CARS";
     	List<Car> cars = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Car.class));
-    	
     	return cars;
-    	
-    	
     }
 
     @Override
@@ -57,15 +49,22 @@ public class CarServiceImpl implements CarService {
         carList.add(car);
     }
 
-    @Override
-    public void deleteCar(String car) {
-        if (carList.contains(car)) {
-            carList.remove(car);
-        }
-    }
+   
 
     @Override
     public void deleteAll() {
         carList.clear();
     }
+
+	@Override
+	public void deleteCar(Long id) throws DataAccessException{
+		
+		String sql = "DELETE FROM cars WHERE id=?";
+	    int rows = jdbcTemplate.update(sql, id);
+	    if (rows != 0){
+	    	System.out.println("Row deleted: " + rows);
+	    }
+	    
+		
+	}
 }

@@ -7,10 +7,21 @@
 var RailwayStationController = function($scope, $http) {
     $scope.rs = {};
     $scope.editMode = false;
+    
+    
 
     $scope.fetchRailwayStationsList = function() {
         $http.get('railwaystations/railwaystationlist.json').success(function(rsList){
-            $scope.railwaystations = rsList;
+            
+            if ($scope.railwaystations != {}){
+        		$scope.railwaystations = {};
+        	}
+        	$scope.railwaystations = rsList;
+        	$scope.existsError = false;
+
+        }).error(function(error){
+        	console.log("Error: ", error);
+        	$scope.existsError = true;
         });
     };
 

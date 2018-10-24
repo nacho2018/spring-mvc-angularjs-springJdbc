@@ -35,9 +35,10 @@ public class CarController {
         carService.addCar(car);
     }
 
-    @RequestMapping(value = "/removeCar/{car}", method = RequestMethod.DELETE)
-    public @ResponseBody void removeCar(@PathVariable("car") String car) {
-        carService.deleteCar(car);
+    @RequestMapping(value = "/removeCar/{carId}", method = RequestMethod.GET)
+    public @ResponseBody void removeCar(@PathVariable("carId") Long carId) {
+        carService.deleteCar(carId);
+    	
     }
 
     @RequestMapping(value = "/removeAllCars", method = RequestMethod.DELETE)

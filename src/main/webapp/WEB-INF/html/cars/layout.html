@@ -18,7 +18,7 @@
     <tbody>
         <tr ng-repeat="car in cars">
             <td  style="width:70px;text-align:center;"><button class="btn btn-mini btn-danger" ng-click="removeCar(car)">Remove</button></td>
-            <td>{{car}}</td>
+            <td>{{car.model}} by {{car.firm}} launched at {{car.year}}</td>
         </tr>
     </tbody>
 </table>
@@ -26,4 +26,7 @@
 <button style="margin-left:100px;" class="btn btn-danger"  ng-show="cars.length > 1" ng-click="removeAllCars()">Remove All Cars</button>
 <div class="alert alert-info" style="width:400px;margin-left:100px;" ng-show="existsError">
     There's been an error from server!
+</div>
+<div id="dRowDeleted" class="alert alert-info" style="width:400px;margin-left:100px;" ng-show="rowDeleted" ng-click="closeDelete()">
+    Row successfully deleted! Press to hide
 </div>
